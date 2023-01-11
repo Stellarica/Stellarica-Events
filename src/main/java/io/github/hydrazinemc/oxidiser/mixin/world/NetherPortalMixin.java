@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.world.NetherPortalOpenEvent;
 
 @Mixin(NetherPortal.class)
@@ -28,7 +28,7 @@ public class NetherPortalMixin {
 
         var world = ((ServerWorldAccess) this.world).toServerWorld();
 
-        try (var invokers = Stimuli.select().at(world, this.lowerCorner)) {
+        try (var invokers = Oxidiser.select().at(world, this.lowerCorner)) {
             var result = invokers.get(NetherPortalOpenEvent.EVENT).onOpenNetherPortal(world, this.lowerCorner);
 
             if (result == ActionResult.FAIL) {

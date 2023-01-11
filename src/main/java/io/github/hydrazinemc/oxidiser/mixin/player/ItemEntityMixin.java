@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.item.ItemPickupEvent;
 
 @Mixin(ItemEntity.class)
@@ -34,7 +34,7 @@ public abstract class ItemEntityMixin extends Entity {
             return;
         }
 
-        try (var invokers = Stimuli.select().forEntityAt(player, this.getBlockPos())) {
+        try (var invokers = Oxidiser.select().forEntityAt(player, this.getBlockPos())) {
             var itemEntity = (ItemEntity) (Object) this;
             var result = invokers.get(ItemPickupEvent.EVENT)
                     .onPickupItem((ServerPlayerEntity) player, itemEntity, itemEntity.getStack());

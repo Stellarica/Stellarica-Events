@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.block.BlockDropItemsEvent;
 import io.github.hydrazinemc.oxidiser.event.world.ExplosionDetonatedEvent;
 
@@ -38,7 +38,7 @@ public class ExplosionMixin {
         if (!this.world.isClient) {
             var pos = new BlockPos(this.x, this.y, this.z);
 
-            try (var invokers = Stimuli.select().at(this.world, pos)) {
+            try (var invokers = Oxidiser.select().at(this.world, pos)) {
                 invokers.get(ExplosionDetonatedEvent.EVENT).onExplosionDetonated((Explosion) (Object) this, particles);
             }
         }
@@ -48,7 +48,7 @@ public class ExplosionMixin {
     private List<ItemStack> stimuli_dropBlock(BlockState state, LootContext.Builder builder) {
         var stacks = state.getDroppedStacks(builder);
 
-        var events = Stimuli.select();
+        var events = Oxidiser.select();
 
         var pos = this.entity != null ? this.entity.getBlockPos() : new BlockPos(this.x, this.y, this.z);
         try (var invokers = this.entity != null ? events.forEntityAt(this.entity, pos) : events.at(world, pos)) {

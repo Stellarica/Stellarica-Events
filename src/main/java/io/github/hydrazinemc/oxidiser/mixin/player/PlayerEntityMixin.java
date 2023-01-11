@@ -6,7 +6,7 @@ import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.player.PlayerRegenerateEvent;
 
 @Mixin(PlayerEntity.class)
@@ -18,7 +18,7 @@ public class PlayerEntityMixin {
             return;
         }
 
-        try (var invokers = Stimuli.select().forEntity(player)) {
+        try (var invokers = Oxidiser.select().forEntity(player)) {
             var result = invokers.get(PlayerRegenerateEvent.EVENT)
                     .onRegenerate((ServerPlayerEntity) player, amount);
 

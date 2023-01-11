@@ -10,7 +10,7 @@ import net.minecraft.entity.Shearable;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.entity.EntityShearEvent;
 
 @Mixin(ShearsDispenserBehavior.class)
@@ -30,7 +30,7 @@ public class ShearsDispenserBehaviorMixin {
         // Entities are selected from the world by the LivingEntity class
         var entity = (LivingEntity) shearable;
 
-        var events = Stimuli.select();
+        var events = Oxidiser.select();
 
         try (var invokers = events.forEntityAt(entity, pos)) {
             var result = invokers.get(EntityShearEvent.EVENT).onShearEntity(entity, null, null, pos);

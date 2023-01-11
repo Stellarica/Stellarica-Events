@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.entity.EntitySpawnEvent;
 import io.github.hydrazinemc.oxidiser.event.world.SnowFallEvent;
 
@@ -20,7 +20,7 @@ public class ServerWorldMixin {
 
     @Inject(method = "spawnEntity", at = @At("HEAD"), cancellable = true)
     private void applyEntitySpawnEvent(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        try (var invokers = Stimuli.select().at((ServerWorld) (Object) this, entity.getBlockPos())) {
+        try (var invokers = Oxidiser.select().at((ServerWorld) (Object) this, entity.getBlockPos())) {
             var result = invokers.get(EntitySpawnEvent.EVENT).onSpawn(entity);
             if (result == ActionResult.FAIL) {
                 cir.setReturnValue(false);
@@ -36,7 +36,7 @@ public class ServerWorldMixin {
 
         ServerWorld serverWorld = (ServerWorld) world;
 
-        try (var invokers = Stimuli.select().at(serverWorld, pos)) {
+        try (var invokers = Oxidiser.select().at(serverWorld, pos)) {
             var result = invokers.get(SnowFallEvent.EVENT).onSnowFall(serverWorld, pos);
             if (result == ActionResult.FAIL) {
                 return false;

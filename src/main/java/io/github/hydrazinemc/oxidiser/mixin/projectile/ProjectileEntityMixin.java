@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.projectile.ProjectileHitEvent;
 
 @Mixin(ProjectileEntity.class)
@@ -27,7 +27,7 @@ public abstract class ProjectileEntityMixin extends Entity {
             return;
         }
 
-        try (var invokers = Stimuli.select().forEntity(this)) {
+        try (var invokers = Oxidiser.select().forEntity(this)) {
             var self = (ProjectileEntity) (Object) this;
             if (hitResult.getType() == HitResult.Type.ENTITY) {
                 var result = invokers.get(ProjectileHitEvent.ENTITY).onHitEntity(self, (EntityHitResult) hitResult);

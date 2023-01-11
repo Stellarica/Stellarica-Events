@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.block.BlockPlaceEvent;
 
 @Mixin(BedItem.class)
@@ -25,7 +25,7 @@ public class BedItemMixin {
 
         var blockPos = context.getBlockPos();
 
-        try (var invokers = Stimuli.select().forEntityAt(player, blockPos)) {
+        try (var invokers = Oxidiser.select().forEntityAt(player, blockPos)) {
             var result = invokers.get(BlockPlaceEvent.BEFORE).onPlace(player, player.getWorld(), blockPos, state, context);
 
             if (result == ActionResult.FAIL) {

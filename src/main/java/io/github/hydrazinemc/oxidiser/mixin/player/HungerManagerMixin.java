@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.player.PlayerConsumeHungerEvent;
 import io.github.hydrazinemc.oxidiser.event.player.PlayerRegenerateEvent;
 
@@ -28,7 +28,7 @@ public class HungerManagerMixin {
         }
 
         if (this.exhaustion > 4.0F) {
-            try (var invokers = Stimuli.select().forEntity(player)) {
+            try (var invokers = Oxidiser.select().forEntity(player)) {
                 var result = invokers.get(PlayerConsumeHungerEvent.EVENT)
                         .onConsumeHunger((ServerPlayerEntity) player, this.foodLevel, this.saturationLevel, this.exhaustion);
 
@@ -45,7 +45,7 @@ public class HungerManagerMixin {
             return;
         }
 
-        try (var invokers = Stimuli.select().forEntity(player)) {
+        try (var invokers = Oxidiser.select().forEntity(player)) {
             var result = invokers.get(PlayerRegenerateEvent.EVENT)
                     .onRegenerate((ServerPlayerEntity) player, amount);
 
@@ -61,7 +61,7 @@ public class HungerManagerMixin {
             return;
         }
 
-        try (var invokers = Stimuli.select().forEntity(player)) {
+        try (var invokers = Oxidiser.select().forEntity(player)) {
             var result = invokers.get(PlayerRegenerateEvent.EVENT)
                     .onRegenerate((ServerPlayerEntity) player, 1);
 

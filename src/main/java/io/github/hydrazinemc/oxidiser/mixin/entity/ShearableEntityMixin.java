@@ -16,7 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.entity.EntityShearEvent;
 
 @Mixin(value = {
@@ -52,7 +52,7 @@ public class ShearableEntityMixin {
             var entity = (LivingEntity) shearable;
             var serverPlayer = (ServerPlayerEntity) player;
 
-            var events = Stimuli.select();
+            var events = Oxidiser.select();
 
             try (var invokers = events.forEntity(entity)) {
                 var result = invokers.get(EntityShearEvent.EVENT).onShearEntity(entity, serverPlayer, hand, null);

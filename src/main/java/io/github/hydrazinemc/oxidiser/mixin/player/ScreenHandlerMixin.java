@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.item.ItemThrowEvent;
 
 @Mixin(ScreenHandler.class)
@@ -60,7 +60,7 @@ public class ScreenHandlerMixin {
 
     private boolean shouldBlockThrowingItems(PlayerEntity player, int slot, ItemStack stack) {
         if (player instanceof ServerPlayerEntity serverPlayer) {
-            try (var invokers = Stimuli.select().forEntity(player)) {
+            try (var invokers = Oxidiser.select().forEntity(player)) {
                 return invokers.get(ItemThrowEvent.EVENT)
                         .onThrowItem(serverPlayer, slot, stack) == ActionResult.FAIL;
             }

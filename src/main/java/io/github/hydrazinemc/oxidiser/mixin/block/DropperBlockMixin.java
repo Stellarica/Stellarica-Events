@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.block.DispenserActivateEvent;
 
 @Mixin(DropperBlock.class)
@@ -30,7 +30,7 @@ public class DropperBlockMixin {
     )
     private void useDispenser(ServerWorld world, BlockPos pos, CallbackInfo ci,
                               BlockPointerImpl blockPointerImpl, DispenserBlockEntity dispenserBlockEntity, int slot, ItemStack itemStack) {
-        var events = Stimuli.select();
+        var events = Oxidiser.select();
 
         try (var invokers = events.at(world, pos)) {
             var result = invokers.get(DispenserActivateEvent.EVENT).onActivate(world, pos, dispenserBlockEntity, slot, itemStack);

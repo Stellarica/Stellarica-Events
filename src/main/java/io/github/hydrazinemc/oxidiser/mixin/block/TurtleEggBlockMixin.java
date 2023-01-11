@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.block.BlockTrampleEvent;
 
 @Mixin(TurtleEggBlock.class)
@@ -29,7 +29,7 @@ public class TurtleEggBlockMixin {
                 }
             }
 
-            try (var invokers = Stimuli.select().forEntityAt(entity, pos)) {
+            try (var invokers = Oxidiser.select().forEntityAt(entity, pos)) {
                 var trampleResult = invokers.get(BlockTrampleEvent.EVENT).onTrample(livingEntity, serverWorld, pos, from, to);
                 if (trampleResult == ActionResult.FAIL) {
                     ci.cancel();

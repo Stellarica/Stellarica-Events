@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.block.BlockDropItemsEvent;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class BlockMixin {
             return;
         }
 
-        var events = Stimuli.select();
+        var events = Oxidiser.select();
 
         try (var invokers = entity != null ? events.forEntityAt(entity, pos) : events.at(world, pos)) {
             var result = invokers.get(BlockDropItemsEvent.EVENT)

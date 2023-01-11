@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.projectile.ArrowFireEvent;
 
 @Mixin(CrossbowItem.class)
@@ -52,7 +52,7 @@ public class CrossbowItemMixin {
             return;
         }
 
-        try (var invokers = Stimuli.select().forEntity(user)) {
+        try (var invokers = Oxidiser.select().forEntity(user)) {
             var result = invokers.get(ArrowFireEvent.EVENT)
                     .onFireArrow((ServerPlayerEntity) user, tool, (ArrowItem) projectileItem, -1, (PersistentProjectileEntity) projectile);
 

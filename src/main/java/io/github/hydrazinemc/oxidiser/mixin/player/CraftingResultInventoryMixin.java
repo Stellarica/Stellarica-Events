@@ -8,14 +8,14 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.item.ItemCraftEvent;
 
 @Mixin(CraftingResultInventory.class)
 public abstract class CraftingResultInventoryMixin implements RecipeUnlocker {
     @Override
     public boolean shouldCraftRecipe(World world, ServerPlayerEntity player, Recipe<?> recipe) {
-        try (var invokers = Stimuli.select().forEntity(player)) {
+        try (var invokers = Oxidiser.select().forEntity(player)) {
             var result = invokers.get(ItemCraftEvent.EVENT).onCraft(player, recipe);
             if (result == ActionResult.FAIL) {
                 return false;

@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.block.FluidPlaceEvent;
 
 @Mixin(BucketItem.class)
@@ -32,7 +32,7 @@ public class BucketItemMixin {
     private void onPlace(PlayerEntity player, World world, BlockPos pos, BlockHitResult hitResult, CallbackInfoReturnable<Boolean> cir, BlockState state) {
         if (world instanceof ServerWorld serverWorld) {
             var serverPlayer = player instanceof ServerPlayerEntity sp ? sp : null;
-            var events = Stimuli.select();
+            var events = Oxidiser.select();
 
             try (var invokers = player != null ? events.forEntityAt(player, pos) : events.at(world, pos)) {
                 var result = invokers.get(FluidPlaceEvent.EVENT).onFluidPlace(serverWorld, pos, serverPlayer, hitResult);

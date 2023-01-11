@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.world.FluidFlowEvent;
 
 @Mixin(FlowableFluid.class)
@@ -24,7 +24,7 @@ public class FlowableFluidMixin {
             return;
         }
 
-        try (var invokers = Stimuli.select().at(world, flowTo)) {
+        try (var invokers = Oxidiser.select().at(world, flowTo)) {
             var result = invokers.get(FluidFlowEvent.EVENT)
                     .onFluidFlow(world, fluidPos, fluidBlockState, flowDirection, flowTo, flowToBlockState);
             if (result == ActionResult.FAIL) {

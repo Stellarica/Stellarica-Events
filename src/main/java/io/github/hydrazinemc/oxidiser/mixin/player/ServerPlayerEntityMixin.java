@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.item.ItemThrowEvent;
 import io.github.hydrazinemc.oxidiser.event.player.PlayerDamageEvent;
 import io.github.hydrazinemc.oxidiser.event.player.PlayerDeathEvent;
@@ -20,7 +20,7 @@ public class ServerPlayerEntityMixin {
     private void onDeath(DamageSource source, CallbackInfo ci) {
         var player = (ServerPlayerEntity) (Object) this;
 
-        try (var invokers = Stimuli.select().forEntity(player)) {
+        try (var invokers = Oxidiser.select().forEntity(player)) {
             var result = invokers.get(PlayerDeathEvent.EVENT).onDeath(player, source);
             if (result == ActionResult.FAIL) {
                 if (player.getHealth() <= 0.0F) {
@@ -35,7 +35,7 @@ public class ServerPlayerEntityMixin {
     private void onDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
         var player = (ServerPlayerEntity) (Object) this;
 
-        try (var invokers = Stimuli.select().forEntity(player)) {
+        try (var invokers = Oxidiser.select().forEntity(player)) {
             var result = invokers.get(PlayerDamageEvent.EVENT).onDamage(player, source, amount);
             if (result == ActionResult.FAIL) {
                 ci.cancel();
@@ -49,7 +49,7 @@ public class ServerPlayerEntityMixin {
         int slot = player.getInventory().selectedSlot;
         var stack = player.getInventory().getStack(slot);
 
-        try (var invokers = Stimuli.select().forEntity(player)) {
+        try (var invokers = Oxidiser.select().forEntity(player)) {
             var result = invokers.get(ItemThrowEvent.EVENT).onThrowItem(player, slot, stack);
             if (result == ActionResult.FAIL) {
                 player.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(ScreenHandlerSlotUpdateS2CPacket.UPDATE_PLAYER_INVENTORY_SYNC_ID, 0, slot, stack));

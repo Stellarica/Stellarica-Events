@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.block.FluidRandomTickEvent;
 import io.github.hydrazinemc.oxidiser.mixin.FluidAccessor;
 
@@ -20,7 +20,7 @@ public class FluidStateMixin {
     private void applyFluidRandomTickEvent(Fluid fluid, World world, BlockPos pos, FluidState state, Random random) {
         ServerWorld serverWorld = (ServerWorld) world;
 
-        try (var invokers = Stimuli.select().at(world, pos)) {
+        try (var invokers = Oxidiser.select().at(world, pos)) {
             var result = invokers.get(FluidRandomTickEvent.EVENT).onFluidRandomTick(serverWorld, pos, state);
             if (result == ActionResult.FAIL) {
                 return;

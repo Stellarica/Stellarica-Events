@@ -3,7 +3,7 @@ plugins {
   java
   alias(libs.plugins.quilt.loom)
 }
-group = property("maven_group")!!
+
 version = property("version")!!
 
 repositories {

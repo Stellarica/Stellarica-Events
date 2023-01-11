@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.player.ReplacePlayerChatEvent;
 
 import java.util.function.Predicate;
@@ -23,7 +23,7 @@ public class PlayerManagerMixin {
     )
     private void broadcastChatMessage(final SignedMessage message, final Predicate<ServerPlayerEntity> shouldSendFiltered, final @Nullable ServerPlayerEntity senderPlayer, final MessageType.Parameters messageType, final CallbackInfo ci) {
         if (senderPlayer != null) {
-            try (var invokers = Stimuli.select().forEntity(senderPlayer)) {
+            try (var invokers = Oxidiser.select().forEntity(senderPlayer)) {
                 if (invokers.get(ReplacePlayerChatEvent.EVENT).shouldConsumeChatMessage(senderPlayer, message, messageType)) {
                     ci.cancel();
                 }

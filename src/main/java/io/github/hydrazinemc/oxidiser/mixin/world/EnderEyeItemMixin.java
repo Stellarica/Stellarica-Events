@@ -9,7 +9,7 @@ import net.minecraft.world.WorldView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.world.EndPortalOpenEvent;
 
 @Mixin(EnderEyeItem.class)
@@ -19,7 +19,7 @@ public class EnderEyeItemMixin {
         var patternResult = pattern.searchAround(patternWorld, pos);
 
         var world = context.getWorld();
-        try (var invokers = Stimuli.select().at(world, pos)) {
+        try (var invokers = Oxidiser.select().at(world, pos)) {
             var result = invokers.get(EndPortalOpenEvent.EVENT).onOpenEndPortal(context, patternResult);
             if (result == ActionResult.FAIL) {
                 return null;

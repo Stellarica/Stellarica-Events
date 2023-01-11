@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import io.github.hydrazinemc.oxidiser.Stimuli;
+import Oxidiser;
 import io.github.hydrazinemc.oxidiser.event.entity.EntityDamageEvent;
 import io.github.hydrazinemc.oxidiser.event.entity.EntityDeathEvent;
 import io.github.hydrazinemc.oxidiser.event.entity.EntityDropItemsEvent;
@@ -36,7 +36,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         var entity = (LivingEntity) (Object) this;
 
-        try (var invokers = Stimuli.select().forEntity(entity)) {
+        try (var invokers = Oxidiser.select().forEntity(entity)) {
             var result = invokers.get(EntityDamageEvent.EVENT).onDamage(entity, source, amount);
             if (result == ActionResult.FAIL) {
                 ci.cancel();
@@ -52,7 +52,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         var entity = (LivingEntity) (Object) this;
 
-        try (var invokers = Stimuli.select().forEntity(entity)) {
+        try (var invokers = Oxidiser.select().forEntity(entity)) {
             var result = invokers.get(EntityDeathEvent.EVENT).onDeath(entity, source);
 
             // cancel death if FAIL was returned from any listener
@@ -69,7 +69,7 @@ public abstract class LivingEntityMixin extends Entity {
             return;
         }
 
-        try (var invokers = Stimuli.select().forEntity(this)) {
+        try (var invokers = Oxidiser.select().forEntity(this)) {
             var droppedStacks = lootTable.generateLoot(context);
 
             var result = invokers.get(EntityDropItemsEvent.EVENT)
