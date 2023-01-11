@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "xyz.nucleoid.stimuli.mixin",
+  "package": "io.github.hydrazinemc.oxidiser.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "FluidAccessor",
@@ -40,7 +40,7 @@
     "world.ServerWorldMixin",
     "world.TntBlockMixin",
     "world.WitherSkullBlockMixin"
-  ],
+   ],
   "injectors": {
     "defaultRequire": 1
   }
