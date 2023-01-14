@@ -1,81 +1,76 @@
-package io.github.hydrazinemc.oxidiser;
+package io.github.hydrazinemc.oxidiser
 
-import io.github.hydrazinemc.oxidiser.event.block.BlockBreakEvent;
-import io.github.hydrazinemc.oxidiser.event.block.BlockUseEvent;
-import io.github.hydrazinemc.oxidiser.event.entity.EntityUseEvent;
-import io.github.hydrazinemc.oxidiser.event.item.ItemUseEvent;
-import io.github.hydrazinemc.oxidiser.event.player.PlayerAttackEntityEvent;
-import io.github.hydrazinemc.oxidiser.event.player.PlayerChatEvent;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.TypedActionResult;
+import io.github.hydrazinemc.oxidiser.event.block.BlockBreakEvent
+import io.github.hydrazinemc.oxidiser.event.block.BlockUseEvent
+import io.github.hydrazinemc.oxidiser.event.entity.EntityUseEvent
+import io.github.hydrazinemc.oxidiser.event.item.ItemUseEvent
+import io.github.hydrazinemc.oxidiser.event.player.PlayerAttackEntityEvent
+import io.github.hydrazinemc.oxidiser.event.player.PlayerChatEvent
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents
+import net.fabricmc.fabric.api.event.player.UseBlockCallback
+import net.fabricmc.fabric.api.event.player.UseEntityCallback
+import net.fabricmc.fabric.api.event.player.UseItemCallback
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents
+import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.world.ServerWorld
+import net.minecraft.util.ActionResult
+import net.minecraft.util.TypedActionResult
+import org.quiltmc.loader.api.ModContainer
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer
 
-class OxidiserInitializer: ModInitializer {
-    override fun onInitialize() {
-        UseEntityCallback.EVENT.register((player, world, hand, entity, hit) -> {
-            if (player instanceof ServerPlayerEntity serverPlayer) {
-                try (var invokers = Oxidiser.select().forEntityAt(player, entity.getBlockPos())) {
-                    var result = invokers.get(EntityUseEvent.EVENT)
-                            .onUse(serverPlayer, entity, hand, hit);
-                    if (result != ActionResult.PASS) {
-                        return result;
-                    }
+class OxidiserInitializer : ModInitializer {
+	override fun onInitialize(mod: ModContainer) {
+		UseEntityCallback.EVENT.register(UseEntityCallback { player, _, hand, entity, hit ->
+			if (player is ServerPlayerEntity) {
+
+				val result = EntityUseEvent.call(EntityUseEvent.EventData(player, entity, hand, hit))
+
+				if (result) {
+					return@UseEntityCallback ActionResult.FAIL
                 }
-            }
+			}
 
-            return ActionResult.PASS;
-        });
+			return@UseEntityCallback ActionResult.PASS
+        })
 
-        UseItemCallback.EVENT.register((player, world, hand) -> {
-            if (player instanceof ServerPlayerEntity serverPlayer) {
-                try (var invokers = Oxidiser.select().forEntity(player)) {
-                    return invokers.get(ItemUseEvent.EVENT).onUse(serverPlayer, hand);
+        UseItemCallback.EVENT.register(UseItemCallback { player, _, hand ->
+			if (player is ServerPlayerEntity) {
+				if (ItemUseEvent.call(ItemUseEvent.EventData(player, hand))) {
+					return@UseItemCallback TypedActionResult.fail(player.getStackInHand(hand))
                 }
-            }
-            return TypedActionResult.pass(ItemStack.EMPTY);
-        });
 
-        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if (player instanceof ServerPlayerEntity serverPlayer) {
-                try (var invokers = Oxidiser.select().forEntityAt(player, hitResult.getBlockPos())) {
-                    return invokers.get(BlockUseEvent.EVENT).onUse(serverPlayer, hand, hitResult);
+			}
+			return@UseItemCallback TypedActionResult.pass(player.getStackInHand(hand))
+        })
+
+        UseBlockCallback.EVENT.register(UseBlockCallback { player, _, hand, hitResult ->
+			if (player is ServerPlayerEntity) {
+				if (BlockUseEvent.call(BlockUseEvent.EventData(player, hand, hitResult))) {
+					return@UseBlockCallback ActionResult.FAIL
                 }
-            }
-            return ActionResult.PASS;
-        });
+			}
+			return@UseBlockCallback ActionResult.PASS
+        })
 
-        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
-            if (player instanceof ServerPlayerEntity serverPlayer) {
-                try (var invokers = Oxidiser.select().forEntityAt(player, pos)) {
-                    return invokers.get(BlockBreakEvent.EVENT).onBreak(serverPlayer, (ServerWorld) world, pos) != ActionResult.FAIL;
-                }
+        PlayerBlockBreakEvents.BEFORE.register(PlayerBlockBreakEvents.Before { world, player, pos, state, entity ->
+			if (player is ServerPlayerEntity) {
+				return@Before !BlockBreakEvent.call(BlockBreakEvent.EventData(player, world as ServerWorld, pos))
             }
-            return true;
-        });
+			return@Before true
+        })
 
-        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (player instanceof ServerPlayerEntity serverPlayer) {
-                try (var invokers = Oxidiser.select().forEntityAt(player, entity.getBlockPos())) {
-                    return invokers.get(PlayerAttackEntityEvent.EVENT).onAttackEntity(serverPlayer, hand, entity, hitResult);
-                }
-            }
-            return ActionResult.PASS;
-        });
+        AttackEntityCallback.EVENT.register(AttackEntityCallback { player, world, hand, entity, hitResult ->
+			if (player is ServerPlayerEntity) {
+				val result =
+					PlayerAttackEntityEvent.call(PlayerAttackEntityEvent.EventData(player, hand, entity, hitResult))
+                if (result) return@AttackEntityCallback ActionResult.FAIL
+			}
+			return@AttackEntityCallback ActionResult.PASS
+        })
 
-        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
-            try (var invokers = Oxidiser.select().forEntity(sender)) {
-                var result = invokers.get(PlayerChatEvent.EVENT).onSendChatMessage(sender, message, params);
-                return result != ActionResult.FAIL;
-            }
-        });
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ServerMessageEvents.AllowChatMessage { message, sender, params ->
+			return@AllowChatMessage !PlayerChatEvent.call(PlayerChatEvent.EventData(sender, message, params))
+		})
     }
 }

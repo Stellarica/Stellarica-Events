@@ -9,5 +9,9 @@ import net.minecraft.server.network.ServerPlayerEntity
  * Called when a [ServerPlayerEntity] sends a message in chat. Message uses its final formatting
  */
 object PlayerChatEvent : Event<PlayerChatEvent.EventData>() {
-	data class EventData(val player: ServerPlayerEntity, val message: SignedChatMessage, val messageType: MessageType)
+	data class EventData(
+		val player: ServerPlayerEntity,
+		val message: SignedChatMessage,
+		val messageType: MessageType.Parameters
+	)
 }

@@ -24,7 +24,7 @@
         "adapter": "kotlin",
         "value": "io.github.hydrazinemc.oxidiser.OxidiserInitializer"
       },
-      "preLaunch": {
+      "pre_launch": {
         "adapter": "kotlin",
         "value": "io.github.hydrazinemc.oxidiser.OxidiserPreLaunchInitializer"
       }

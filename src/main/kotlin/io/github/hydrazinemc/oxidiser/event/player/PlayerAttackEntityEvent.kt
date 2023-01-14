@@ -14,6 +14,6 @@ object PlayerAttackEntityEvent : Event<PlayerAttackEntityEvent.EventData>() {
 		val attacker: ServerPlayerEntity,
 		val hand: Hand,
 		val attacked: Entity,
-		val hitResult: EntityHitResult
+		val hitResult: EntityHitResult?
 	)
 }

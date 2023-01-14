@@ -20,7 +20,7 @@ public class HungerManagerMixin {
 	@Shadow
 	private float exhaustion;
 	@Shadow
-	private float saturationLevel;
+	private float foodSaturationLevel;
 
 	@Inject(method = "update", at = @At("HEAD"))
 	private void update(PlayerEntity player, CallbackInfo ci) {
@@ -29,7 +29,7 @@ public class HungerManagerMixin {
 		}
 
 		if (this.exhaustion > 4.0F) {
-			var result = PlayerConsumeHungerEvent.INSTANCE.call(new PlayerConsumeHungerEvent.EventData((ServerPlayerEntity) player, this.foodLevel, this.saturationLevel, this.exhaustion));
+			var result = PlayerConsumeHungerEvent.INSTANCE.call(new PlayerConsumeHungerEvent.EventData((ServerPlayerEntity) player, this.foodLevel, this.foodSaturationLevel, this.exhaustion));
 
 			if (result) {
 				this.exhaustion = 0.0F;

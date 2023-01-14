@@ -41,7 +41,9 @@ open class Event<T> {
 		/** The priority of this listener. Lower runs first **/
 		val priority: Int = 0
 	) {
-		init { event.listeners.add(this) }
+		init {
+			event.listeners.add(this)
+		}
 
 		/** Unregister this listener from [event] */
 		fun unregister() {
@@ -52,8 +54,10 @@ open class Event<T> {
 	enum class Result {
 		/** Continue on to the next listener */
 		CONTINUE,
+
 		/** Stop running the next listeners, but don't cancel the event */
 		STOP,
+
 		/** Stop running listeners and cancel the event */
 		CANCEL
 	}

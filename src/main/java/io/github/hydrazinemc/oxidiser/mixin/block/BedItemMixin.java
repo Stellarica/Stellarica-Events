@@ -22,7 +22,7 @@ public class BedItemMixin {
 		}
 		var blockPos = context.getBlockPos();
 
-		var result = BlockPlaceEvent.INSTANCE.call(new BlockPlaceEvent.EventData(player, player.getWorld(), blockPos, state, context));
+		var result = BlockPlaceEvent.INSTANCE.call(new BlockPlaceEvent.EventData(player, player.getWorld(), blockPos, state));
 
 		if (result) {
 			// notify the client that this action did not go through
