@@ -1,10 +1,11 @@
 plugins {
   kotlin("jvm") version "1.8.0"
   java
+  `maven-publish`
   alias(libs.plugins.quilt.loom)
 }
 
-version = property("version")!!
+version = property("mod_version")!!
 
 repositories {
   maven("https://jitpack.io") // mixin extras
@@ -42,4 +43,26 @@ tasks {
 
 java {
   withSourcesJar()
+}
+
+
+publishing {
+  repositories {
+    maven {
+      name = "Stellarica"
+      url = uri("https://repo.stellarica.net/releases")
+      credentials(PasswordCredentials::class)
+      authentication {
+        create<BasicAuthentication>("basic")
+      }
+    }
+  }
+  publications {
+    create<MavenPublication>("maven") {
+      groupId = "net.stellarica" // todo: move these to gradle properties
+      artifactId = "oxidiser"
+      version = project.version.toString()
+      from(components["java"])
+    }
+  }
 }
