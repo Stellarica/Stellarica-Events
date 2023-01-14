@@ -10,7 +10,7 @@ open class Event<T> {
 	/**
 	 * Call all listeners subscribed to this event.
 	 * @param data to be passed to the listeners.
-	 * @return whether the event was cancelled
+	 * @return true if the event was cancelled
 	 */
 	fun call(data: T): Boolean {
 		listeners.sortedBy { it.priority }.forEach {

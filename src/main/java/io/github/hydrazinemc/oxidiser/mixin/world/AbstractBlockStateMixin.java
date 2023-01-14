@@ -1,28 +1,27 @@
 package io.github.hydrazinemc.oxidiser.mixin.world;
 
+import io.github.hydrazinemc.oxidiser.event.block.BlockRandomTickEvent;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.random.RandomGenerator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import Oxidiser;
-import io.github.hydrazinemc.oxidiser.event.block.BlockRandomTickEvent;
 
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public class AbstractBlockStateMixin {
-    @Redirect(method = "randomTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;randomTick(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/random/Random;)V"))
-    private void applyBlockRandomTickEvent(Block block, BlockState state, ServerWorld world, BlockPos pos, net.minecraft.util.math.random.Random random) {
-        try (var invokers = Oxidiser.select().at(world, pos)) {
-            var result = invokers.get(BlockRandomTickEvent.EVENT).onBlockRandomTick(world, pos, state);
-            if (result == ActionResult.FAIL) {
-                return;
-            }
-        }
+	@Redirect(method = "randomTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;randomTick(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/random/RandomGenerator;)V"))
+	private void applyBlockRandomTickEvent(Block block, BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 
-        block.randomTick(state, world, pos, random);
-    }}
+		var result = BlockRandomTickEvent.INSTANCE.call(new BlockRandomTickEvent.EventData(world, pos, state));
+		if (result) {
+			return;
+		}
+
+		block.randomTick(state, world, pos, random);
+	}
+}

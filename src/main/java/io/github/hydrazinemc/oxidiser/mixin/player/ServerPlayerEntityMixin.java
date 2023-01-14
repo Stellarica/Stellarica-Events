@@ -1,60 +1,52 @@
 package io.github.hydrazinemc.oxidiser.mixin.player;
 
+import io.github.hydrazinemc.oxidiser.event.item.ItemThrowEvent;
+import io.github.hydrazinemc.oxidiser.event.player.PlayerDamageEvent;
+import io.github.hydrazinemc.oxidiser.event.player.PlayerDeathEvent;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import Oxidiser;
-import io.github.hydrazinemc.oxidiser.event.item.ItemThrowEvent;
-import io.github.hydrazinemc.oxidiser.event.player.PlayerDamageEvent;
-import io.github.hydrazinemc.oxidiser.event.player.PlayerDeathEvent;
 
 @Mixin(ServerPlayerEntity.class)
 public class ServerPlayerEntityMixin {
-    @Inject(method = "onDeath", at = @At("HEAD"), cancellable = true)
-    private void onDeath(DamageSource source, CallbackInfo ci) {
-        var player = (ServerPlayerEntity) (Object) this;
+	@Inject(method = "onDeath", at = @At("HEAD"), cancellable = true)
+	private void onDeath(DamageSource source, CallbackInfo ci) {
+		var player = (ServerPlayerEntity) (Object) this;
 
-        try (var invokers = Oxidiser.select().forEntity(player)) {
-            var result = invokers.get(PlayerDeathEvent.EVENT).onDeath(player, source);
-            if (result == ActionResult.FAIL) {
-                if (player.getHealth() <= 0.0F) {
-                    player.setHealth(player.getMaxHealth());
-                }
-                ci.cancel();
-            }
-        }
-    }
+		var result = PlayerDeathEvent.INSTANCE.call(new PlayerDeathEvent.EventData(player, source));
+		if (result) {
+			if (player.getHealth() <= 0.0F) {
+				player.setHealth(player.getMaxHealth());
+			}
+			ci.cancel();
+		}
+	}
 
-    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-    private void onDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
-        var player = (ServerPlayerEntity) (Object) this;
+	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+	private void onDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
+		var player = (ServerPlayerEntity) (Object) this;
 
-        try (var invokers = Oxidiser.select().forEntity(player)) {
-            var result = invokers.get(PlayerDamageEvent.EVENT).onDamage(player, source, amount);
-            if (result == ActionResult.FAIL) {
-                ci.cancel();
-            }
-        }
-    }
+		var result = PlayerDamageEvent.INSTANCE.call(new PlayerDamageEvent.EventData(player, source, amount));
+		if (result) {
+			ci.cancel();
+		}
+	}
 
-    @Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
-    private void dropSelectedItem(boolean dropEntireStack, CallbackInfoReturnable<Boolean> ci) {
-        var player = (ServerPlayerEntity) (Object) this;
-        int slot = player.getInventory().selectedSlot;
-        var stack = player.getInventory().getStack(slot);
+	@Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
+	private void dropSelectedItem(boolean dropEntireStack, CallbackInfoReturnable<Boolean> ci) {
+		var player = (ServerPlayerEntity) (Object) this;
+		int slot = player.getInventory().selectedSlot;
+		var stack = player.getInventory().getStack(slot);
 
-        try (var invokers = Oxidiser.select().forEntity(player)) {
-            var result = invokers.get(ItemThrowEvent.EVENT).onThrowItem(player, slot, stack);
-            if (result == ActionResult.FAIL) {
-                player.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(ScreenHandlerSlotUpdateS2CPacket.UPDATE_PLAYER_INVENTORY_SYNC_ID, 0, slot, stack));
-                ci.setReturnValue(false);
-            }
-        }
-    }
+		var result = ItemThrowEvent.INSTANCE.call(new ItemThrowEvent.EventData(player, slot, stack));
+		if (result) {
+			player.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(ScreenHandlerSlotUpdateS2CPacket.UPDATE_PLAYER_INVENTORY_SYNC_ID, 0, slot, stack));
+			ci.setReturnValue(false);
+		}
+	}
 }

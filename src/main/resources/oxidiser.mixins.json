@@ -29,17 +29,13 @@
     "projectile.CrossbowItemMixin",
     "projectile.ProjectileEntityMixin",
     "world.AbstractBlockStateMixin",
-    "world.EnderEyeItemMixin",
     "world.ExplosionMixin",
     "world.FireBlockMixin",
     "world.FlowableFluidMixin",
     "world.FluidStateMixin",
     "world.FrostedIceBlockMixin",
     "world.IceBlockMixin",
-    "world.NetherPortalMixin",
     "world.ServerWorldMixin",
-    "world.TntBlockMixin",
-    "world.WitherSkullBlockMixin"
    ],
   "injectors": {
     "defaultRequire": 1
