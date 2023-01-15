@@ -16,8 +16,11 @@ import net.stellarica.oxidizer.event.entity.EntityUseEvent
 import net.stellarica.oxidizer.event.item.ItemUseEvent
 import net.stellarica.oxidizer.event.player.PlayerAttackEntityEvent
 import net.stellarica.oxidizer.event.player.PlayerChatEvent
+import net.stellarica.oxidizer.event.server.EndServerTickEvent
+import net.stellarica.oxidizer.event.server.StartServerTickEvent
 import org.quiltmc.loader.api.ModContainer
 import org.quiltmc.qsl.base.api.entrypoint.server.DedicatedServerModInitializer
+import org.quiltmc.qsl.lifecycle.api.event.ServerTickEvents
 
 @Suppress("unused")
 class OxidizerInitializer : DedicatedServerModInitializer {
@@ -72,6 +75,14 @@ class OxidizerInitializer : DedicatedServerModInitializer {
 
 		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(ServerMessageEvents.AllowChatMessage { message, sender, params ->
 			return@AllowChatMessage !PlayerChatEvent.call(PlayerChatEvent.EventData(sender, message, params))
+		})
+
+		ServerTickEvents.START.register(ServerTickEvents.Start { _ ->
+			StartServerTickEvent.call("")
+		})
+
+		ServerTickEvents.END.register(ServerTickEvents.End { _ ->
+			EndServerTickEvent.call("")
 		})
 	}
 }
