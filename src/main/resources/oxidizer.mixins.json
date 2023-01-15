@@ -1,0 +1,41 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.stellarica.oxidizer.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "FluidAccessor",
+    "block.BedItemMixin",
+    "block.BlockItemMixin",
+    "block.BlockMixin",
+    "block.BucketItemMixin",
+    "block.DispenserBlockMixin",
+    "block.DropperBlockMixin",
+    "block.FarmlandBlockMixin",
+    "block.TurtleEggBlockMixin",
+    "entity.LivingEntityMixin",
+    "player.ClientConnectionMixin",
+    "player.CraftingResultInventoryMixin",
+    "player.HungerManagerMixin",
+    "player.ItemEntityMixin",
+    "player.PlayerManagerMixin",
+    "player.ScreenHandlerMixin",
+    "player.ServerPlayerEntityMixin",
+    "player.ServerPlayerInteractionManagerMixin",
+    "player.ServerPlayNetworkHandlerMixin",
+    "projectile.BowItemMixin",
+    "projectile.CrossbowItemMixin",
+    "projectile.ProjectileEntityMixin",
+    "world.AbstractBlockStateMixin",
+    "world.ExplosionMixin",
+    "world.FireBlockMixin",
+    "world.FlowableFluidMixin",
+    "world.FluidStateMixin",
+    "world.FrostedIceBlockMixin",
+    "world.IceBlockMixin",
+    "world.ServerWorldMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

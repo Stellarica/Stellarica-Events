@@ -1,4 +1,4 @@
-rootProject.name = "Oxidiser"
+rootProject.name = "Oxidizer"
 
 pluginManagement {
   repositories {

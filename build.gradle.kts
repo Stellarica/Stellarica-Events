@@ -50,7 +50,7 @@ publishing {
   repositories {
     maven {
       name = "Stellarica"
-      url = uri("https://repo.stellarica.net/releases")
+      url = uri(if (version.toString().endsWith("SNAPSHOT")) "https://repo.stellarica.net/snapshots" else "https://repo.stellarica.net/releases")
       credentials(PasswordCredentials::class)
       authentication {
         create<BasicAuthentication>("basic")
@@ -60,7 +60,7 @@ publishing {
   publications {
     create<MavenPublication>("maven") {
       groupId = "net.stellarica" // todo: move these to gradle properties
-      artifactId = "oxidiser"
+      artifactId = "oxidizer"
       version = project.version.toString()
       from(components["java"])
     }
