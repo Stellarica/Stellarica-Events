@@ -17,10 +17,11 @@ import net.stellarica.oxidizer.event.item.ItemUseEvent
 import net.stellarica.oxidizer.event.player.PlayerAttackEntityEvent
 import net.stellarica.oxidizer.event.player.PlayerChatEvent
 import org.quiltmc.loader.api.ModContainer
-import org.quiltmc.qsl.base.api.entrypoint.ModInitializer
+import org.quiltmc.qsl.base.api.entrypoint.server.DedicatedServerModInitializer
 
-class OxidizerInitializer : ModInitializer {
-	override fun onInitialize(mod: ModContainer) {
+@Suppress("unused")
+class OxidizerInitializer : DedicatedServerModInitializer {
+	override fun onInitializeServer(mod: ModContainer) {
 		UseEntityCallback.EVENT.register(UseEntityCallback { player, _, hand, entity, hit ->
 			if (player is ServerPlayerEntity) {
 
