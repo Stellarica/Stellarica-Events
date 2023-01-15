@@ -5,11 +5,12 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity
 import net.minecraft.item.ArrowItem
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
+import net.stellarica.oxidizer.event.Event
 
 /**
  * Called when a [ServerPlayerEntity] fires an [ArrowEntity] from a bow or crossbow.
  */
-object ArrowFireEvent : net.stellarica.oxidizer.event.Event<ArrowFireEvent.EventData>() {
+object ArrowFireEvent : Event<ArrowFireEvent.EventData>() {
 	data class EventData(
 		val user: ServerPlayerEntity,
 		val tool: ItemStack,

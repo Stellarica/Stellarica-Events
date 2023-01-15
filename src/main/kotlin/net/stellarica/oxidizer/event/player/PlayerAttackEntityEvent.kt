@@ -4,11 +4,12 @@ import net.minecraft.entity.Entity
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.EntityHitResult
+import net.stellarica.oxidizer.event.Event
 
 /**
  * Called when any [ServerPlayerEntity] attempts to attack another [Entity].
  */
-object PlayerAttackEntityEvent : net.stellarica.oxidizer.event.Event<PlayerAttackEntityEvent.EventData>() {
+object PlayerAttackEntityEvent : Event<PlayerAttackEntityEvent.EventData>() {
 	data class EventData(
 		val attacker: ServerPlayerEntity,
 		val hand: Hand,
