@@ -8,6 +8,7 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import net.stellarica.oxidizer.event.item.ItemThrowEvent;
+import net.stellarica.oxidizer.event.player.PlayerInventoryActionEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,7 +28,7 @@ public class ScreenHandlerMixin {
 			return;
 		}
 
-		if (type == SlotActionType.THROW || type == SlotActionType.PICKUP) {
+		else if (type == SlotActionType.THROW || type == SlotActionType.PICKUP) {
 			ItemStack stack = null;
 			if (type == SlotActionType.PICKUP && slot == -999) {
 				stack = player.currentScreenHandler.getCursorStack();
@@ -40,6 +41,11 @@ public class ScreenHandlerMixin {
 					player.currentScreenHandler.setCursorStack(stack);
 					ci.cancel();
 				}
+			}
+		}
+		else {
+			if (PlayerInventoryActionEvent.INSTANCE.call(new PlayerInventoryActionEvent.EventData((ServerPlayerEntity) player, slot, type, button))) {
+				ci.cancel();
 			}
 		}
 	}
@@ -62,7 +68,6 @@ public class ScreenHandlerMixin {
 		if (player instanceof ServerPlayerEntity serverPlayer) {
 			return ItemThrowEvent.INSTANCE.call(new ItemThrowEvent.EventData(serverPlayer, slot, stack));
 		}
-
 		return false;
 	}
 }
