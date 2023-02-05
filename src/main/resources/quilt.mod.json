@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "quilt_loader": {
-    "group": "net.stellarica.oxidizer",
-    "id": "oxidizer",
+    "group": "net.stellarica.events",
+    "id": "stellarica-events",
     "version": "${version}",
     "metadata": {
-      "name": "oxidizer",
+      "name": "Stellarica Events",
       "description": "Server-side event library for Quilt. Fork of NucleoidMC's Stimuli",
       "contributors": {
         "trainb0y": "Maintainer",
@@ -13,20 +13,20 @@
       },
       "contact": {
         "homepage": "https://stellarica.net/",
-        "issues": "https://github.com/Stellarica/oxidizer/issues",
-        "sources": "https://github.com/Stellarica/oxidizer"
+        "issues": "https://github.com/Stellarica/Stellarica-Events/issues",
+        "sources": "https://github.com/Stellarica/Stellarica-Events"
       },
-      "icon": "assets/oxidizer/icon.png"
+      "icon": "assets/stellarica-events/icon.png"
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
       "server_init": {
         "adapter": "kotlin",
-        "value": "net.stellarica.oxidizer.OxidizerInitializer"
+        "value": "net.stellarica.events.StellaricaEventsInitializer"
       },
       "pre_launch": {
         "adapter": "kotlin",
-        "value": "net.stellarica.oxidizer.OxidizerPreLaunchInitializer"
+        "value": "net.stellarica.events.StellaricaEventsPreLaunchInitializer"
       }
     },
     "depends": [
@@ -48,5 +48,5 @@
       }
     ]
   },
-  "mixin": "oxidizer.mixins.json"
+  "mixin": "stellarica-events.mixins.json"
 }

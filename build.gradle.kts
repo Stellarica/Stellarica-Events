@@ -60,7 +60,7 @@ publishing {
   publications {
     create<MavenPublication>("maven") {
       groupId = "net.stellarica" // todo: move these to gradle properties
-      artifactId = "oxidizer"
+      artifactId = "events"
       version = project.version.toString()
       from(components["java"])
     }

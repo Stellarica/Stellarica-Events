@@ -1,4 +1,4 @@
-rootProject.name = "Oxidizer"
+rootProject.name = "Stellarica-Events"
 
 pluginManagement {
   repositories {
