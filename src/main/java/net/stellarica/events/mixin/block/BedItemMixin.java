@@ -6,7 +6,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
-import net.stellarica.events.event.block.BlockPlaceEvent;
+import net.stellarica.events.block.BlockPlaceEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

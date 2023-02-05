@@ -6,7 +6,7 @@ import net.minecraft.recipe.RecipeUnlocker;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.stellarica.events.event.item.ItemCraftEvent;
+import net.stellarica.events.item.ItemCraftEvent;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(CraftingResultInventory.class)

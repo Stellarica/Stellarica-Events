@@ -6,7 +6,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
-import net.stellarica.events.event.block.FluidRandomTickEvent;
+import net.stellarica.events.block.FluidRandomTickEvent;
 import net.stellarica.events.mixin.FluidAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

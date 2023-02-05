@@ -5,7 +5,7 @@ import net.minecraft.block.IceBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.stellarica.events.event.world.IceMeltEvent;
+import net.stellarica.events.world.IceMeltEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
