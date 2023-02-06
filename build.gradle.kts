@@ -1,68 +1,72 @@
 plugins {
-  kotlin("jvm") version "1.8.0"
-  java
-  `maven-publish`
-  alias(libs.plugins.quilt.loom)
+	kotlin("jvm") version "1.8.0"
+	java
+	`maven-publish`
+	alias(libs.plugins.quilt.loom)
 }
 
 version = property("mod_version")!!
 
 repositories {
-  maven("https://jitpack.io") // mixin extras
+	maven("https://jitpack.io") // mixin extras
 }
 
 dependencies {
-  minecraft(libs.minecraft)
-  mappings(variantOf(libs.quilt.mappings) { classifier("intermediary-v2") })
-  modImplementation(libs.quilt.loader)
-  modImplementation(libs.quilted.fabric.api)
-  modImplementation(libs.quilt.kotlin)
+	minecraft(libs.minecraft)
+	mappings(variantOf(libs.quilt.mappings) { classifier("intermediary-v2") })
+	modImplementation(libs.quilt.loader)
+	modImplementation(libs.quilted.fabric.api)
+	modImplementation(libs.quilt.kotlin)
 
-  implementation(libs.mixinextras)
-  include(libs.mixinextras)
-  annotationProcessor(libs.mixinextras)
+	implementation(libs.mixinextras)
+	include(libs.mixinextras)
+	annotationProcessor(libs.mixinextras)
 }
 
 tasks {
 
-  processResources {
-    inputs.property("version", project.version)
-    filesMatching("quilt.mod.json") {
-      expand(mutableMapOf("version" to project.version))
-    }
-  }
+	processResources {
+		inputs.property("version", project.version)
+		filesMatching("quilt.mod.json") {
+			expand(mutableMapOf("version" to project.version))
+		}
+	}
 
-  jar {
-    from("LICENSE")
-  }
+	jar {
+		from("LICENSE")
+	}
 
-  compileKotlin {
-    kotlinOptions.jvmTarget = "17"
-  }
+	compileKotlin {
+		kotlinOptions.jvmTarget = "17"
+	}
 }
 
 java {
-  withSourcesJar()
+	withSourcesJar()
 }
 
 
 publishing {
-  repositories {
-    maven {
-      name = "Stellarica"
-      url = uri(if (version.toString().endsWith("SNAPSHOT")) "https://repo.stellarica.net/snapshots" else "https://repo.stellarica.net/releases")
-      credentials(PasswordCredentials::class)
-      authentication {
-        create<BasicAuthentication>("basic")
-      }
-    }
-  }
-  publications {
-    create<MavenPublication>("maven") {
-      groupId = "net.stellarica" // todo: move these to gradle properties
-      artifactId = "events"
-      version = project.version.toString()
-      from(components["java"])
-    }
-  }
+	repositories {
+		maven {
+			name = "Stellarica"
+			url = uri(
+				if (version.toString()
+						.endsWith("SNAPSHOT")
+				) "https://repo.stellarica.net/snapshots" else "https://repo.stellarica.net/releases"
+			)
+			credentials(PasswordCredentials::class)
+			authentication {
+				create<BasicAuthentication>("basic")
+			}
+		}
+	}
+	publications {
+		create<MavenPublication>("maven") {
+			groupId = "net.stellarica" // todo: move these to gradle properties
+			artifactId = "events"
+			version = project.version.toString()
+			from(components["java"])
+		}
+	}
 }

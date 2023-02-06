@@ -26,9 +26,7 @@ public class ScreenHandlerMixin {
 	private void onSlotAction(int slot, int button, SlotActionType type, PlayerEntity player, CallbackInfo ci) {
 		if (player.world.isClient) {
 			return;
-		}
-
-		else if (type == SlotActionType.THROW || type == SlotActionType.PICKUP) {
+		} else if (type == SlotActionType.THROW || type == SlotActionType.PICKUP) {
 			ItemStack stack = null;
 			if (type == SlotActionType.PICKUP && slot == -999) {
 				stack = player.currentScreenHandler.getCursorStack();
@@ -42,8 +40,7 @@ public class ScreenHandlerMixin {
 					ci.cancel();
 				}
 			}
-		}
-		else {
+		} else {
 			if (PlayerInventoryActionEvent.INSTANCE.call(new PlayerInventoryActionEvent.EventData((ServerPlayerEntity) player, slot, type, button))) {
 				ci.cancel();
 			}
